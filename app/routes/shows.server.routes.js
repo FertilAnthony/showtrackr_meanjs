@@ -5,9 +5,7 @@ module.exports = function(app) {
 	var shows = require('../../app/controllers/shows.server.controller');
 
 	// Shows Routes
-	app.route('/shows')
-		.get(shows.list)
-		.post(users.requiresLogin, shows.create);
+	app.route('/shows').get(shows.list);
 
 	app.route('/shows/:showId')
 		.get(shows.read)
