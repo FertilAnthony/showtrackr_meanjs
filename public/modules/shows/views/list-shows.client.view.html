@@ -1,0 +1,19 @@
+<section data-ng-controller="ShowsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Shows</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="show in shows" data-ng-href="#!/shows/{{show._id}}" class="list-group-item">
+			<small class="list-group-item-text">
+				Posted on
+				<span data-ng-bind="show.created | date:'medium'"></span>
+				by
+				<span data-ng-bind="show.user.displayName"></span>
+			</small>
+			<h4 class="list-group-item-heading" data-ng-bind="show.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!shows.$resolved || shows.length">
+    	No Shows yet, why don't you <a href="/#!/shows/create">create one</a>?
+    </div>
+</section>
