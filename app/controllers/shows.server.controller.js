@@ -6,7 +6,11 @@
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Show = mongoose.model('Show'),
-	_ = require('lodash');
+	_ = require('lodash'),
+	async = require('async'),
+	request = require('request');
+
+var apiKey = '59b911c4b1f1';
 
 /**
  * Create a Show
@@ -72,7 +76,7 @@ exports.delete = function(req, res) {
 /**
  * List of Shows
  */
-exports.list = function(req, res) { 
+exports.list = function(req, res) {
 	Show.find().sort('-created').populate('user', 'displayName').exec(function(err, shows) {
 		if (err) {
 			return res.status(400).send({
@@ -87,7 +91,7 @@ exports.list = function(req, res) {
 /**
  * Show middleware
  */
-exports.showByID = function(req, res, next, id) { 
+exports.showByID = function(req, res, next, id) {
 	Show.findById(id).populate('user', 'displayName').exec(function(err, show) {
 		if (err) return next(err);
 		if (! show) return next(new Error('Failed to load Show ' + id));
@@ -104,4 +108,31 @@ exports.hasAuthorization = function(req, res, next) {
 		return res.status(403).send('User is not authorized');
 	}
 	next();
+};
+
+/**
+ * Home top 12 shows
+ */
+exports.topShows = function(req, res, next) {
+	var shows = [];
+
+	async.waterfall([
+		function(callback) {
+
+			request.get('https://api.betaseries.com/shows/search?v=2.3&key=' + apiKey + '&order=followers&summary=true&nbpp=12', function(error, response, body) {
+				if (error) return next(error);
+
+				// On parcourt les series pour recuperer les images
+				shows = JSON.parse(response.body).shows;
+
+				for (var i in shows) {
+					shows[i].picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=313&width=209&id=' + shows[i].id;
+				}
+				callback(null, shows);
+			});
+		}
+	], function (err, shows) {
+		if (err) return next(err);
+		res.status(200).send(shows);
+	});
 };
