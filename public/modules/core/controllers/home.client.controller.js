@@ -1,9 +1,9 @@
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'topShowsFactory', '$log',
-	function($scope, Authentication, topShowsFactory, $log) {
-$log.log('test');
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'TopShows', '$log',
+	function($scope, Authentication, TopShows, $log) {
+$log.log(TopShows.getTopShows());
 		var vm = this;
 
 		// This provides Authentication context.
@@ -12,7 +12,6 @@ $log.log('test');
 		vm.shows = [];
 
 		// call resolve route
-		vm.shows = topShowsFactory;
-		$log.log(vm.shows);
+		//vm.shows = TopShows.getTopShows();
 	}
 ]);
