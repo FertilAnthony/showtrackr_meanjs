@@ -136,3 +136,35 @@ exports.topShows = function(req, res, next) {
 		res.status(200).send(shows);
 	});
 };
+
+/**
+ * Paginated list of Shows
+ */
+exports.paginationList = function(req, res, next) {
+	var shows = [],
+		page = req.params.pagination;
+
+	async.waterfall([
+		function(callback) {
+
+			request.get('https://api.betaseries.com/shows/search?v=2.3&key=' + apiKey + '&order=followers&nbpp=20&page=' + page, function(error, response, body) {
+		        if (error) return next(error);
+
+		        // On parcourt les series pour recuperer les images
+		        shows = JSON.parse(response.body).shows;
+
+				for (var i in shows) {
+					shows[i].picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=313&width=209&id=' + shows[i].id;
+		        	
+		        	if (shows[i].status === 'Ended') {
+		        		shows[i].endDate = parseInt(shows[i].creation, 10) + parseInt(shows[i].seasons, 10);
+		        	}
+		        }
+		        callback(null, shows);
+		    });
+		}
+	], function (err, shows) {
+		if (err) return next(err);
+		res.status(200).send(shows);
+	});
+};

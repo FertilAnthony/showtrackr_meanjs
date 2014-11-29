@@ -1,12 +1,19 @@
 'use strict';
 
 // Shows controller
-angular.module('shows').controller('ShowsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Shows',
-	function($scope, $stateParams, $location, Authentication, Shows) {
+angular.module('shows').controller('ShowsController', ['$scope', '$stateParams', '$location', 'Authentication', 'PaginatedShows',
+	function($scope, $stateParams, $location, Authentication, PaginatedShows) {
+
+		var vm = this;
 		$scope.authentication = Authentication;
 
+		// Get paginated list of shows
+		PaginatedShows.then(function(shows) {
+			vm.shows = shows;
+		});
+
 		// Create new Show
-		$scope.create = function() {
+		/*$scope.create = function() {
 			// Create new Show object
 			var show = new Shows ({
 				name: this.name
@@ -21,10 +28,10 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
-		};
+		};*/
 
 		// Remove existing Show
-		$scope.remove = function(show) {
+		/*$scope.remove = function(show) {
 			if ( show ) { 
 				show.$remove();
 
@@ -38,10 +45,10 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 					$location.path('shows');
 				});
 			}
-		};
+		};*/
 
 		// Update existing Show
-		$scope.update = function() {
+		/*$scope.update = function() {
 			var show = $scope.show;
 
 			show.$update(function() {
@@ -49,18 +56,18 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 			}, function(errorResponse) {
 				$scope.error = errorResponse.data.message;
 			});
-		};
+		};*/
 
 		// Find a list of Shows
-		$scope.find = function() {
+		/*$scope.find = function() {
 			$scope.shows = Shows.query();
-		};
+		};*/
 
 		// Find existing Show
-		$scope.findOne = function() {
+		/*$scope.findOne = function() {
 			$scope.show = Shows.get({ 
 				showId: $stateParams.showId
 			});
-		};
+		};*/
 	}
 ]);

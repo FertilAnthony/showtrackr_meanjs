@@ -7,6 +7,7 @@ module.exports = function(app) {
 	// Shows Routes
 	app.route('/shows').get(shows.list);
 
+	app.route('/api/shows/page/:pagination').get(shows.paginationList);
 	app.route('/api/topshows').get(shows.topShows);
 
 	app.route('/shows/:showId')

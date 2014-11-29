@@ -2,7 +2,7 @@
 
 
 angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'TopShows',
-	function($scope, Authentication, TopShows, $log) {
+	function($scope, Authentication, TopShows) {
 
 		var vm = this;
 
