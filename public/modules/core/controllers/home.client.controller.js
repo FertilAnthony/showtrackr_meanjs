@@ -1,18 +1,30 @@
 'use strict';
 
 
-angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'topShowsFactory', '$log',
-	function($scope, Authentication, topShowsFactory, $log) {
-$log.log('test');
+angular.module('core').controller('HomeController', ['$scope', 'Authentication', 'TopShows',
+	function($scope, Authentication, TopShows, $log) {
+
 		var vm = this;
 
 		// This provides Authentication context.
-		$scope.authentication = Authentication;
+		vm.authentication = Authentication;
+
+		vm.headingTitle = 'Top TV shows';
+  		vm.alphabet = ['0-9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    		'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+    		'Y', 'Z'];
+  		vm.genres = ['Action', 'Adventure', 'Animation', 'Children', 'Comedy',
+    		'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Food',
+    		'Home and Garden', 'Horror', 'Mini-Series', 'Mystery', 'News', 'Reality',
+    		'Romance', 'Sci-Fi', 'Sport', 'Suspense', 'Talk Show', 'Thriller',
+    		'Travel'];
 
 		vm.shows = [];
 
-		// call resolve route
-		vm.shows = topShowsFactory;
-		$log.log(vm.shows);
+		TopShows.then(function(shows) {
+			vm.shows = shows;
+			console.log(vm.shows);
+		});
+		
 	}
 ]);

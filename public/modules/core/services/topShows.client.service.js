@@ -13,7 +13,7 @@ angular.module('core').service('TopShows', ['TopShowsFactory', '$q', '$log',
 		}
 
 		TopShowsFactory.query().$promise.then(onGetTopShowsWithSuccess, deferred.reject);
-$log.log('test');
+
 		return deferred.promise;
 	}
 ]);
