@@ -14,6 +14,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$locatio
 		// Redirect to home view when route not found
 		$urlRouterProvider.otherwise('/');
 		// Configure html5
-  		$locationProvider.html5Mode(true);
+  		/*$locationProvider.html5Mode(true);*/
 	}
 ]);
