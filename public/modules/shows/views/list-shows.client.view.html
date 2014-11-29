@@ -2,19 +2,47 @@
     <div class="page-header">
         <h1>Shows</h1>
     </div>
-    <div class="list-group">
-        <a data-ng-repeat="show in vm.shows" data-ng-href="#!/shows/{{show._id}}" class="list-group-item">
-            <div class="showTitle">{{show.title}}</div>
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="show.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="show.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="show.name"></h4>
-        </a>
+    <div class="panel-body">
+        <div class="row show-list">
+            <div class="TVshow col-md-12" ng-repeat="show in vm.shows">
+                <div class="col-md-4 col-xs-6 col-sm-4 posterLink">
+                    <a data-ui-sref="showDetail({ id: show.id })">
+                        <img class="img-rounded poster" ng-src="{{show.picture}}"/>
+                    </a>
+                </div>
+                <div class="details col-xs-12 col-sm-8 col-md-8">
+                <a data-ui-sref="showDetail({ id: show.id })">
+                    <div class="showTitle">{{show.title}}</div>
+                </a>
+                <div class="production">
+                    <span ng-show="show.status == 'Continuing' ? true: false">
+                        <strong>Production:</strong> {{show.creation}} - Aujourd'hui
+                    </span>
+                    <span ng-show="show.status == 'Ended' ? true: false">
+                        <strong>Production:</strong> {{show.creation}} - {{show.endDate}}
+                    </span>
+                </div>
+                <div class="actors"></div>
+                <div class="genres">
+                    <strong>Genres:</strong>
+                    <span ng-repeat="genre in show.genres">
+                        {{genre}}<span ng-hide="$last">,&nbsp;</span>
+                    </span>
+                </div>
+                <span>Notes:</span> 
+                <rating class="rating" ng-model="show.notes.mean" readonly=true state-on="'glyphicon glyphicon-star'" state-off="'glyphicon glyphicon-star-empty'"></rating>
+                <b>({{show.notes.mean}})</b>
+                <div class="favoris">
+                    <button class="btn btn-success glyphicon glyphicon-heart">
+                        <span class="textButton">Favoris</span>
+                    </button>
+                    <div class="followers">{{show.followers}} followers</div>
+                </div>
+                <div class="description" data-ng-bind="show.description" data-ellipsis></div>
+                <div class="border"></div>
+            </div>
+        </div>
     </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!shows.$resolved || shows.length">
-    	No Shows yet, why don't you <a href="/#!/shows/create">create one</a>?
-    </div>
+  <!-- <pagination boundary-links="true" total-items="totalItems" ng-model="vm.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination> -->
+</div>
 </section>
