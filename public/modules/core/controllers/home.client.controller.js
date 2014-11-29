@@ -23,7 +23,6 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 		TopShows.then(function(shows) {
 			vm.shows = shows;
-			console.log(vm.shows);
 		});
 		
 	}

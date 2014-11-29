@@ -8,7 +8,6 @@ angular.module('core').service('TopShows', ['TopShowsFactory', '$q', '$log',
 
 		function onGetTopShowsWithSuccess(response) {
 		    var shows = response;
-			$log.log(shows);
 		    deferred.resolve(shows);
 		}
 

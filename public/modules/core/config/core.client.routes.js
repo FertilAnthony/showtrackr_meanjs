@@ -9,7 +9,6 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$locatio
 		state('home', {
 			url: '/',
 			templateUrl: 'modules/core/views/home.client.view.html',
-			/*controller: 'HomeController as vm',*/
 			/*resolve: {
 		        topShowsResolve: function(TopShows) {
 		        	TopShows.then(function(shows) {

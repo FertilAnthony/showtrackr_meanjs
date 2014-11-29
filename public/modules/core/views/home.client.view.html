@@ -1,39 +1,35 @@
 <section data-ng-controller="HomeController as vm">
-	<div class="home">
+	<div class="home container">
 		<div class="jumbotron">
-	    	<div class="container">
-	      		<ul class="alphabet">
-	        		<li data-ng-repeat="char in vm.alphabet">
-	          			<span data-ng-click="vm.filterByAlphabet(char)">{{char}}</span>
-	        		</li>
-	      		</ul>
-	      		<ul class="genres">
-	        		<li data-ng-repeat="genre in vm.genres">
-	          			<span data-ng-click="vm.filterByGenre(genre)">{{genre}}</span>
-	        		</li>
-	      		</ul>
-    		</div>
+      		<ul class="alphabet">
+        		<li data-ng-repeat="char in vm.alphabet">
+          			<span data-ng-click="vm.filterByAlphabet(char)">{{char}}</span>
+        		</li>
+      		</ul>
+      		<ul class="genres">
+        		<li data-ng-repeat="genre in vm.genres">
+          			<span data-ng-click="vm.filterByGenre(genre)">{{genre}}</span>
+        		</li>
+      		</ul>
 	  	</div>
 
-	  	<div class="container">
-	    	<div class="panel panel-default">
-	      		<div class="panel-heading">
-	        		{{vm.headingTitle}}
-	      		</div>
-	      		<div class="panel-body">
-	        		<div class="row show-list">
-	          			<div class="col-xs-4 col-md-3" data-ng-repeat="show in vm.shows">
-	           				<a data-ui-sref="showDetail({ id: show.id })">
-	              				<img class="img-rounded picture" data-ng-src="{{show.picture}}" width="100%"/>
-	            			</a>
-	            			<div class="text-center infos">
-	              				<div class="showTitle">{{show.title}}</div>
-	              				<p class="text-muted showEpisodes">Episodes: {{show.episodes}}</p>
-	            			</div>
-	          			</div>
-	        		</div>
-	      		</div>
-	    	</div>
-	  	</div>
+    	<div class="panel panel-default">
+      		<div class="panel-heading">
+        		{{vm.headingTitle}}
+      		</div>
+      		<div class="panel-body">
+        		<div class="row show-list">
+          			<div class="col-xs-4 col-sm-3" data-ng-repeat="show in vm.shows">
+           				<a data-ui-sref="showDetail({ id: show.id })">
+              				<img class="img-rounded picture" data-ng-src="{{show.picture}}" width="100%"/>
+            			</a>
+            			<div class="text-center infos">
+              				<div class="showTitle">{{show.title}}</div>
+              				<p class="text-muted showEpisodes">Episodes: {{show.episodes}}</p>
+            			</div>
+          			</div>
+        		</div>
+      		</div>
+    	</div>
 	</div>
 </section>
