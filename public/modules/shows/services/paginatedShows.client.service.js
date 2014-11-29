@@ -1,9 +1,9 @@
 'use strict';
 
 // Users service used for communicating with the shows REST endpoint
-angular.module('shows').service('PaginatedShows', ['PaginatedShowsFactory', '$q', '$stateParams', '$log',
+angular.module('shows').service('PaginatedShows', ['PaginatedShowsFactory', '$q', '$stateParams',
 
-	function(PaginatedShowsFactory, $q, $stateParams,  $log) {
+	function(PaginatedShowsFactory, $q, $stateParams) {
 		var deferred = $q.defer(),
 			pagination = typeof $stateParams.pagination !== 'undefined' ? $stateParams.pagination : 1;
 

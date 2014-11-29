@@ -1,14 +1,14 @@
 'use strict';
 
 // Users service used for communicating with the shows REST endpoint
-angular.module('core').service('TopShows', ['TopShowsFactory', '$q',
+angular.module('core').service('TopShows', ['TopShowsFactory', '$q', '$log',
 
-	function(TopShowsFactory, $q) {
+	function(TopShowsFactory, $q, $log) {
 		var deferred = $q.defer();
 
 		function onGetTopShowsWithSuccess(response) {
-		    var shows = response;
-		    deferred.resolve(shows);
+			var shows = response;
+			deferred.resolve(shows);
 		}
 
 		TopShowsFactory.query().$promise.then(onGetTopShowsWithSuccess, deferred.reject);

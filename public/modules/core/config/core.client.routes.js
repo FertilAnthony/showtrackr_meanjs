@@ -8,19 +8,12 @@ angular.module('core').config(['$stateProvider', '$urlRouterProvider', '$locatio
 		$stateProvider.
 		state('home', {
 			url: '/',
-			templateUrl: 'modules/core/views/home.client.view.html',
-			/*resolve: {
-		        topShowsResolve: function(TopShows) {
-		        	TopShows.then(function(shows) {
-		        		return shows;
-		        	});
-		        }
-		    }*/
+			templateUrl: 'modules/core/views/home.client.view.html'
 		});
 
 		// Redirect to home view when route not found
 		$urlRouterProvider.otherwise('/');
 		// Configure html5
-  		/*$locationProvider.html5Mode(true);*/
+  		$locationProvider.html5Mode(true);
 	}
 ]);
