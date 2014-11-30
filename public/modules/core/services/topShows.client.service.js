@@ -4,15 +4,18 @@
 angular.module('core').service('TopShows', ['TopShowsFactory', '$q', '$log',
 
 	function(TopShowsFactory, $q, $log) {
-		var deferred = $q.defer();
 
-		function onGetTopShowsWithSuccess(response) {
-			var shows = response;
-			deferred.resolve(shows);
-		}
+		this.getTopShowsList = function getTopShowsList() {
+			var deferred = $q.defer();
 
-		TopShowsFactory.query().$promise.then(onGetTopShowsWithSuccess, deferred.reject);
+			function onGetTopShowsWithSuccess(response) {
+				var shows = response;
+				deferred.resolve(shows);
+			}
 
-		return deferred.promise;
+			TopShowsFactory.getTopshows().query().$promise.then(onGetTopShowsWithSuccess, deferred.reject);
+
+			return deferred.promise;
+		};
 	}
 ]);

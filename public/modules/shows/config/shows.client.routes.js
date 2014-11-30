@@ -8,10 +8,12 @@ angular.module('shows').config(['$stateProvider',
 		state('listShows', {
 			url: '/shows/page/:pagination',
 			templateUrl: 'modules/shows/views/list-shows.client.view.html',
+			controller: 'ShowsController',
 			/*resolve: {
-		        listShowsResolved: function(PaginatedShows, $stateParams) {
-		        	console.log(PaginatedShows($stateParams.pagination));
-		          return PaginatedShows($stateParams.pagination);
+		        listShowsResolved: function(ShowsListService, $stateParams) {
+		          	ShowsListService.getPaginatedShowsList().then(function(shows) {
+		          		return shows;
+		          	});
 		        }
 		    }*/
 		}).

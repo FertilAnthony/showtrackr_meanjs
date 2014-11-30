@@ -154,7 +154,7 @@ exports.paginationList = function(req, res, next) {
 		        shows = JSON.parse(response.body).shows;
 
 				for (var i in shows) {
-					shows[i].picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=313&width=209&id=' + shows[i].id;
+					shows[i].picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=360&width=555&id=' + shows[i].id;
 		        	
 		        	if (shows[i].status === 'Ended') {
 		        		shows[i].endDate = parseInt(shows[i].creation, 10) + parseInt(shows[i].seasons, 10);

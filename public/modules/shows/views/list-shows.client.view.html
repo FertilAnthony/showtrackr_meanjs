@@ -2,15 +2,21 @@
     <div class="page-header">
         <h1>Shows</h1>
     </div>
-    <div class="panel-body">
+    <div class="panel-body listShows">
         <div class="row show-list">
             <div class="TVshow col-md-12" ng-repeat="show in vm.shows">
-                <div class="col-md-4 col-xs-6 col-sm-4 posterLink">
-                    <a data-ui-sref="showDetail({ id: show.id })">
-                        <img class="img-rounded poster" ng-src="{{show.picture}}"/>
-                    </a>
-                </div>
-                <div class="details col-xs-12 col-sm-8 col-md-8">
+                
+                    <figure class="col-xs-6 posterLink">
+                        <img class="poster img-responsive" ng-src="{{show.picture}}"/>
+                        <figcaption>
+                            <h2>{{show.title}}</h2>
+                            <p>
+                                <a data-ui-sref="home">home</a>
+                            </p>
+                        </figcaption>
+                    </figure>
+                
+                <div class="details col-xs-6">
                 <a data-ui-sref="showDetail({ id: show.id })">
                     <div class="showTitle">{{show.title}}</div>
                 </a>
@@ -43,6 +49,6 @@
             </div>
         </div>
     </div>
-  <!-- <pagination boundary-links="true" total-items="totalItems" ng-model="vm.currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination> -->
+  <pagination boundary-links="true" total-items="vm.totalItems" data-ng-model="vm.currentPage" data-ng-change="vm.pageChanged()" max-size="9" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
 </div>
 </section>

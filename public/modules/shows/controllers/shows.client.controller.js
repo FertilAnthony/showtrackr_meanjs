@@ -1,16 +1,28 @@
 'use strict';
 
 // Shows controller
-angular.module('shows').controller('ShowsController', ['$scope', '$stateParams', '$location', 'Authentication', 'PaginatedShows',
-	function($scope, $stateParams, $location, Authentication, PaginatedShows) {
+angular.module('shows').controller('ShowsController', ['$scope', '$stateParams', '$location', 'Authentication', 'ShowsListService',
+	function($scope, $stateParams, $location, Authentication, ShowsListService) {
 
 		var vm = this;
 		$scope.authentication = Authentication;
 
 		// Get paginated list of shows
-		PaginatedShows.then(function(shows) {
-			vm.shows = shows;
-		});
+		vm.paginatedShows = function() {
+			ShowsListService.getPaginatedShowsList().then(function(shows) {
+				vm.shows = shows;
+			});
+		};
+		vm.paginatedShows();
+
+		// Configure pagination
+		vm.currentPage = $stateParams.pagination;
+		vm.totalItems = 9768;
+
+		vm.pageChanged = function() {
+			$stateParams.pagination = vm.currentPage;
+			vm.paginatedShows();
+		};
 
 		// Create new Show
 		/*$scope.create = function() {

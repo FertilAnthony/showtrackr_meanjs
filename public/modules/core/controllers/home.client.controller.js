@@ -21,7 +21,7 @@ angular.module('core').controller('HomeController', ['$scope', 'Authentication',
 
 		vm.shows = [];
 
-		TopShows.then(function(shows) {
+		TopShows.getTopShowsList().then(function(shows) {
 			vm.shows = shows;
 		});
 	}

@@ -1,0 +1,15 @@
+.listShows figure{
+	background: #162633;
+	text-align: left;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.listShows .poster {
+	-webkit-transition: opacity 0.45s;
+	transition: opacity 0.45s;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	opacity: 0.8;
+}
