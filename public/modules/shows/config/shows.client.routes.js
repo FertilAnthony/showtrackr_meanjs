@@ -17,7 +17,7 @@ angular.module('shows').config(['$stateProvider',
 		        }
 		    }*/
 		}).
-		state('viewShow', {
+		state('showDetail', {
 			url: '/shows/:showId',
 			templateUrl: 'modules/shows/views/view-show.client.view.html'
 		});
