@@ -10,10 +10,7 @@ module.exports = function(app) {
 	app.route('/api/shows/page/:pagination').get(shows.paginationList);
 	app.route('/api/topshows').get(shows.topShows);
 
-	app.route('/shows/:showId')
-		.get(shows.read)
-		.put(users.requiresLogin, shows.hasAuthorization, shows.update)
-		.delete(users.requiresLogin, shows.hasAuthorization, shows.delete);
+	app.route('/api/shows/:id').get(shows.showDetail);
 
 	// Finish by binding the Show middleware
 	app.param('showId', shows.showByID);

@@ -18,7 +18,7 @@ angular.module('shows').config(['$stateProvider',
 		    }*/
 		}).
 		state('showDetail', {
-			url: '/shows/:showId',
+			url: '/shows/:id',
 			templateUrl: 'modules/shows/views/view-show.client.view.html'
 		});
 	}

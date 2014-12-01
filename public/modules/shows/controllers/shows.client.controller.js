@@ -8,9 +8,11 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 		$scope.authentication = Authentication;
 
 		// Get paginated list of shows
-		ShowsListService.getPaginatedShowsList().then(function(shows) {
-			vm.shows = shows;
-		});
+		vm.getPaginatedShows = function() {
+			ShowsListService.getPaginatedShowsList($stateParams.pagination).then(function(shows) {
+				vm.shows = shows;
+			});
+		};
 
 		// Configure pagination
 		vm.currentPage = $stateParams.pagination;
@@ -18,6 +20,15 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 
 		vm.pageChanged = function() {
 			$location.path('shows/page/' + vm.currentPage);
+		};
+
+
+		// Get show detail
+		vm.getShowDetail = function() {
+			ShowsListService.getShowById($stateParams.id).then(function(show) {
+				// console.log(show);
+				vm.show = show;
+			});
 		};
 
 		// Create new Show

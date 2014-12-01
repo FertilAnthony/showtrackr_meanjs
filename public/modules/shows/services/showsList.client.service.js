@@ -5,9 +5,10 @@ angular.module('shows').service('ShowsListService', ['ShowsListFactory', '$q', '
 
 	function(ShowsListFactory, $q, $stateParams) {
 
-		this.getPaginatedShowsList = function getPaginatedShowsList() {
-			var deferred = $q.defer(),
-				pagination = typeof $stateParams.pagination !== 'undefined' ? $stateParams.pagination : 1;
+		this.getPaginatedShowsList = function getPaginatedShowsList(pagination) {
+			var deferred = $q.defer();
+
+			pagination = typeof pagination !== 'undefined' ? pagination : 1;
 
 			function onGetPaginatedShowsWithSuccess(response) {
 			    var shows = response;
@@ -23,9 +24,8 @@ angular.module('shows').service('ShowsListService', ['ShowsListFactory', '$q', '
 		    var deferred = $q.defer();
 
 		     function onGetShowWithSuccess(response) {
-		      var shows = response;
-
-		      deferred.resolve(shows);
+		      var show = response;
+		      deferred.resolve(show);
 		    }
 
 		    ShowsListFactory.getShowsById().get({id: id}).$promise.then(onGetShowWithSuccess, deferred.reject);

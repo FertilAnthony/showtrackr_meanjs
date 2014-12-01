@@ -168,3 +168,50 @@ exports.paginationList = function(req, res, next) {
 		res.status(200).send(shows);
 	});
 };
+
+
+/** 
+ * Show detail
+ */
+exports.showDetail = function(req, res, next) {
+	var showDetail = [],
+		episodes = [],
+		characters = [],
+		showId = req.params.id;
+
+	async.waterfall([
+		// Detail generaux de la serie
+		function(callback) {
+			request.get('https://api.betaseries.com/shows/display?v=2.3&key=' + apiKey + '&id=' + showId, function(error, response, body) {
+				if (error) return next(error);
+
+				showDetail = JSON.parse(response.body).show;
+				showDetail.picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=380&width=255&id=' + showId;
+				callback(null, showDetail);
+			});
+		},
+		// Caracteres de la serie
+		function(showDetail, callback) {
+			request.get('https://api.betaseries.com/shows/characters?v=2.3&key=' + apiKey + '&id=' + showId, function(error, response, body) {
+				if (error) return next(error);
+
+				characters = JSON.parse(response.body).characters;
+				showDetail.characters = characters;
+				callback(null, showDetail);
+			});
+		},
+		// Récupération de tous les episodes
+		function(showDetail, callback) {
+			var seasons = [];
+
+			request.get('https://api.betaseries.com/shows/episodes?v=2.3&key=' + apiKey + '&id=' + showDetail.id, function(error, response, body) {
+				if (error) return next(error);
+
+				episodes = JSON.parse(response.body).episodes;
+				showDetail.episodes_details = episodes;
+				res.status(200).send(showDetail);
+			});
+			
+		}
+	]);
+};
