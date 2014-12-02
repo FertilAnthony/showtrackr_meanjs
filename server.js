@@ -19,7 +19,25 @@ var configApi = require('./config/configPopcornApi');
  */
 
 // Bootstrap db connection
-var db = mongoose.connect(config.db, function(err) {
+var db = mongoose.connect(config.db, {
+	db: { native_parser: true },
+	replset: { 
+		rs_name: 'pt0', 
+		connectWithNoPrimary: true, 
+		readPreference: 'nearest', 
+		strategy: 'ping',
+		socketOptions: {
+			keepAlive: 1
+		}
+	}, 
+	server: { 
+		readPreference: 'nearest', 
+		strategy: 'ping',
+		socketOptions: {
+			keepAlive: 1
+		}
+	}
+}, function(err) {
 	if (err) {
 		console.error(chalk.red('Could not connect to MongoDB!'));
 		console.log(chalk.red(err));
