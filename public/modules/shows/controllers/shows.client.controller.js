@@ -10,23 +10,22 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 		// Get paginated list of shows
 		vm.getPaginatedShows = function() {
 			ShowsListService.getPaginatedShowsList($stateParams.pagination).then(function(shows) {
+				//console.log(shows);
 				vm.shows = shows;
 			});
-		};
 
-		// Configure pagination
-		vm.currentPage = $stateParams.pagination;
-		vm.totalItems = 9768;
+			// Configure pagination
+			vm.currentPage = $stateParams.pagination;
+			vm.totalItems = 9768;
+		};
 
 		vm.pageChanged = function() {
 			$location.path('shows/page/' + vm.currentPage);
 		};
 
-
 		// Get show detail
 		vm.getShowDetail = function() {
 			ShowsListService.getShowById($stateParams.id).then(function(show) {
-				// console.log(show);
 				vm.show = show;
 			});
 		};

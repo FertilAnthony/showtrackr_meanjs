@@ -7,7 +7,7 @@
             <div class="TVshow col-md-12" ng-repeat="show in vm.shows">
                 
                     <figure class="col-xs-6 posterLink">
-                        <img class="poster img-responsive" ng-src="{{show.picture}}"/>
+                        <img class="poster img-responsive" ng-src="{{show.images.fanart}}"/>
                         <figcaption>
                             <h2>{{show.title}}</h2>
                             <p>
@@ -44,7 +44,7 @@
                     </button>
                     <div class="followers">{{show.followers}} followers</div>
                 </div>
-                <div class="description" data-ng-bind="show.description" data-ellipsis></div>
+                <div class="description" data-ng-bind="show.synopsis" data-ellipsis></div>
                 <div class="border"></div>
             </div>
         </div>

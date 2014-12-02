@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
 	Show = mongoose.model('Show'),
 	_ = require('lodash'),
 	async = require('async'),
-	request = require('request');
+	request = require('request'),
+	configApi = require('../../config/configPopcornApi');
 
 var apiKey = '59b911c4b1f1';
 
@@ -140,7 +141,59 @@ exports.topShows = function(req, res, next) {
 /**
  * Paginated list of Shows
  */
-exports.paginationList = function(req, res, next) {
+exports.paginationList = function(req, res) {
+ 	var page = req.params.pagination;   
+    var offset = page * configApi.pageSize;
+
+    // support older version
+    if (req.params.page == 'all') {
+
+      Show.find({num_seasons: { $gt: 0 }}).sort({ title: -1 }).exec(function (err, docs) {
+        res.json(docs);
+      });  
+
+    } else {
+
+      var query = {num_seasons: { $gt: 0 }};
+      var data = req.query;
+      
+      if (!data.order) 
+      	data.order = -1;
+      	
+      var sort = {'rating.votes':  data.order, 'rating.percentage':  data.order}
+      // filter elements
+
+      if (data.keywords) {
+        var words = data.keywords.split(' ');
+        var regex = data.keywords.toLowerCase();
+        if(words.length > 1) {
+          var regex = '^';
+          for(var w in words) {
+            regex += '(?=.*\\b'+RegExp.escape(words[w].toLowerCase())+'\\b)';
+          }
+          regex += '.+';
+        }
+        query = {title: new RegExp(regex,'gi'),num_seasons: { $gt: 0 }};
+      }
+
+      if (data.sort) {
+        if(data.sort == 'year') sort = {year: data.order};
+        if(data.sort == 'updated') sort = {'episodes.first_aired':  data.order};
+        if(data.sort == 'name') sort = {title:  (data.order * -1)};
+      }
+
+      if(data.genre && data.genre != 'All') {
+        query = {genres : data.genre,num_seasons: { $gt: 0 }}
+      }
+
+      // paging
+      Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, synopsis:1, num_seasons:1, last_updated:1, ratings:1 }).sort(sort).skip(offset).limit(configApi.pageSize).exec(function (err, docs) {
+        res.json(docs);
+      });
+
+    }
+};
+/*exports.paginationList = function(req, res, next) {
 	var shows = [],
 		page = req.params.pagination;
 
@@ -167,7 +220,7 @@ exports.paginationList = function(req, res, next) {
 		if (err) return next(err);
 		res.status(200).send(shows);
 	});
-};
+};*/
 
 
 /** 
@@ -187,11 +240,11 @@ exports.showDetail = function(req, res, next) {
 
 				showDetail = JSON.parse(response.body).show;
 				showDetail.picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=380&width=255&id=' + showId;
-				callback(null, showDetail);
+				res.status(200).send(showDetail);
 			});
-		},
+		}
 		// Caracteres de la serie
-		function(showDetail, callback) {
+		/*function(showDetail, callback) {
 			request.get('https://api.betaseries.com/shows/characters?v=2.3&key=' + apiKey + '&id=' + showId, function(error, response, body) {
 				if (error) return next(error);
 
@@ -199,9 +252,9 @@ exports.showDetail = function(req, res, next) {
 				showDetail.characters = characters;
 				callback(null, showDetail);
 			});
-		},
+		},*/
 		// Récupération de tous les episodes
-		function(showDetail, callback) {
+		/*function(showDetail, callback) {
 			var seasons = [];
 
 			request.get('https://api.betaseries.com/shows/episodes?v=2.3&key=' + apiKey + '&id=' + showDetail.id, function(error, response, body) {
@@ -212,6 +265,6 @@ exports.showDetail = function(req, res, next) {
 				res.status(200).send(showDetail);
 			});
 			
-		}
+		}*/
 	]);
 };
