@@ -10,7 +10,7 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 		// Get paginated list of shows
 		vm.getPaginatedShows = function() {
 			ShowsListService.getPaginatedShowsList($stateParams.pagination).then(function(shows) {
-				//console.log(shows);
+				console.log(shows);
 				vm.shows = shows;
 			});
 
