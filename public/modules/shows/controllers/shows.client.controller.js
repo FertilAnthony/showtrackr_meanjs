@@ -6,7 +6,7 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 
 		var vm = this;
 		vm.authentication = Authentication;
-console.log(vm.authentication);
+
 		// Get paginated list of shows
 		vm.getPaginatedShows = function() {
 			ShowsListService.getPaginatedShowsList($stateParams.pagination).then(function(shows) {
