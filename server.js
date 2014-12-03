@@ -13,6 +13,10 @@ var init = require('./config/init')(),
 // settings
 var configApi = require('./config/configPopcornApi');
 
+RegExp.escape = function(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
 /**
  * Main application entry file.
  * Please note that the order of loading is important.

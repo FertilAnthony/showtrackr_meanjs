@@ -12,6 +12,11 @@ module.exports = function(app) {
 
 	app.route('/api/shows/:id').get(shows.showDetail);
 
+	app.route('/api/shows/search/:search/page/:pagination').get(shows.searchShows);
+
+	app.route('/api/show/subscribe').post(shows.subscribeShow);
+	app.route('/api/show/unsubscribe').post(shows.unsubscribeShow);
+
 	// Finish by binding the Show middleware
 	app.param('showId', shows.showByID);
 };

@@ -187,13 +187,12 @@ exports.paginationList = function(req, res) {
       }
 
       // paging
-      Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, synopsis:1, num_seasons:1, last_updated:1, rating:1 }).sort(sort).skip(offset).limit(configApi.pageSize).exec(function (err, docs) {
+      Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, synopsis:1, num_seasons:1, last_updated:1}).sort(sort).skip(offset).limit(configApi.pageSize).exec(function (err, docs) {
         res.json(docs);
       });
 
     }
 };
-
 
 /** 
  * Show detail
@@ -203,4 +202,81 @@ exports.showDetail = function(req, res) {
         if(Array.isArray(docs)) docs = docs[0];
         res.json(docs);
     });
+};
+
+/**
+ * Search shows -> a approfondir
+ */
+ exports.searchShows = function(req, res) {
+ 	var page = req.params.pagination - 1;
+    var offset = page * configApi.pageSize;    
+    var keywords = new RegExp(RegExp.escape(req.params.search.toLowerCase()),"gi");
+
+    Show.find({title: keywords,num_seasons: { $gt: 0 }}, { _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, synopsis:1, num_seasons:1, last_updated:1}).sort({ title: -1 }).skip(offset).limit(configApi.pageSize).exec(function (err, docs) {
+      res.json(docs);
+    });
+ };
+
+/**
+ * Add shows to favorite
+ */
+exports.subscribeShow = function(req, res) {
+	var showId = req.query.showId,
+		user = req.user;
+
+	if (user.subscribeShows.indexOf(showId) === -1) {
+		user.subscribeShows.push(showId);
+		user.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				req.login(user, function(err) {
+					if (err) {
+						res.status(400).send(err);
+					} else {
+						res.json(user);
+					}
+				});
+			}
+		});
+	} else {
+		return res.status(200).send({
+			message: 'You\'re already follow this show'
+		});
+	}
+	
+};
+
+/**
+ * Remove shows from favorite
+ */
+exports.unsubscribeShow = function(req, res) {
+	var showId = req.query.showId,
+		user = req.user,
+		index = user.subscribeShows.indexOf(showId);
+
+	if (index !== -1) {
+		user.subscribeShows.splice(1, index);
+		user.save(function(err) {
+			if (err) {
+				return res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				req.login(user, function(err) {
+					if (err) {
+						res.status(400).send(err);
+					} else {
+						res.json(user);
+					}
+				});
+			}
+		});
+	} else {
+		return res.status(200).send({
+			message: 'You\'re not following this show'
+		});
+	}
 };

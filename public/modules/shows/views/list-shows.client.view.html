@@ -39,10 +39,16 @@
                 <rating class="rating" ng-model="show.notes.mean" readonly=true state-on="'glyphicon glyphicon-star'" state-off="'glyphicon glyphicon-star-empty'"></rating>
                 <b>({{show.notes.mean}})</b>
                 <div class="favoris">
-                    <button class="btn btn-success glyphicon glyphicon-heart">
-                        <span class="textButton">Favoris</span>
-                    </button>
-                    <div class="followers">{{show.followers}} followers</div>
+                    <div data-ng-show="!vm.isSubscribed(show._id)">
+                        <button data-ng-click="vm.subscribeShow(show._id)" class="btn btn-success glyphicon glyphicon-heart">
+                            <span class="textButton">Subscribe</span>
+                        </button>
+                    </div>
+                    <div data-ng-show="vm.isSubscribed(show._id)">
+                        <button data-ng-click="vm.unsubscribeShow(show._id)" class="btn btn-success glyphicon glyphicon-heart">
+                            <span class="textButton">Unsubscribe</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="description" data-ng-bind="show.synopsis" data-ellipsis></div>
                 <div class="border"></div>

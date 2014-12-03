@@ -165,6 +165,76 @@ module.exports = function(grunt) {
 		      'public/dist/style.min.css': 'style/{,*/}*.{scss,sass}'
 		    }
 		  }
+		},
+		angularTemplateCache: {
+			options: {
+		        module: 'templatesCache'
+		    },
+	      	defaultOptions: {
+		        src: 'index.html',
+		        dest: 'tmp/default_options.js',
+		        cwd: 'test/fixtures'
+		    },
+		    doubleQuote: {
+		        options: {
+		        	quote: '"'
+		        },
+		        src: 'index.html',
+		        dest: 'tmp/double_quote.js',
+		        cwd: 'test/fixtures'
+		    },
+		    	htmlminNull: {
+		        options: {
+		        	htmlmin: null
+		        },
+		        src: 'index.html',
+		        dest: 'tmp/htmlmin_null.js',
+		        cwd: 'test/fixtures'
+		    },
+		    multiline: {
+		        src: 'multiline.html',
+		        dest: 'tmp/multiline.js',
+		        cwd: 'test/fixtures'
+		    },
+		    multiple: {
+		        src: '*.html',
+		        dest: 'tmp/multiple.js',
+		        cwd: 'test/fixtures'
+		    },
+		    minified: {
+		        options: {
+		        	htmlmin: {
+		            	collapseWhitespace: true
+		          	}
+		        },
+		        src: 'multiline.html',
+		        dest: 'tmp/minified.js',
+		        cwd: 'test/fixtures'
+		    },
+		    newModule: {
+		        options: {
+		        	newModule: true
+		        },
+		        src: 'index.html',
+		        dest: 'tmp/new_module.js',
+		        cwd: 'test/fixtures'
+		    },
+		    noStrict: {
+		        options: {
+		        	strict: false
+		        },
+		        src: 'index.html',
+		        dest: 'tmp/no_strict.js',
+		        cwd: 'test/fixtures'
+		    },
+		    tabs: {
+		        options: {
+		        	indent: '\t'
+		        },
+		        src: 'index.html',
+		        dest: 'tmp/tabs.js',
+		        cwd: 'test/fixtures'
+		    }
 		}
 	});
 
@@ -184,7 +254,7 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['lint', 'sass:dev', 'concurrent:default']);
+	grunt.registerTask('default', ['lint', 'sass:dev', 'angularTemplateCache', 'concurrent:default']);
 
 	// Debug task.
 	grunt.registerTask('debug', ['lint', 'concurrent:debug']);

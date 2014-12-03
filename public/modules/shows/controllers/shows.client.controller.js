@@ -5,8 +5,8 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 	function($scope, $stateParams, $location, Authentication, ShowsListService) {
 
 		var vm = this;
-		$scope.authentication = Authentication;
-
+		vm.authentication = Authentication;
+console.log(vm.authentication);
 		// Get paginated list of shows
 		vm.getPaginatedShows = function() {
 			ShowsListService.getPaginatedShowsList($stateParams.pagination).then(function(shows) {
@@ -26,7 +26,26 @@ angular.module('shows').controller('ShowsController', ['$scope', '$stateParams',
 		// Get show detail
 		vm.getShowDetail = function() {
 			ShowsListService.getShowById($stateParams.id).then(function(show) {
+				console.log(show);
 				vm.show = show;
+			});
+		};
+
+		// Test if user already subscribe to show
+		vm.isSubscribed = function(showId) {
+			return vm.authentication.user.subscribeShows.indexOf(showId) !== -1;
+		};
+
+		// Add show to favorites
+		vm.subscribeShow = function(showId) {
+			ShowsListService.subscribeShow(showId).then(function(response) {
+				console.log(response);
+			});
+		};
+
+		vm.unsubscribeShow = function(showId) {
+			ShowsListService.unsubscribeShow(showId).then(function(response) {
+				console.log(response);
 			});
 		};
 
