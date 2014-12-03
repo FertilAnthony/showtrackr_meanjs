@@ -142,7 +142,7 @@ exports.topShows = function(req, res, next) {
  * Paginated list of Shows
  */
 exports.paginationList = function(req, res) {
- 	var page = req.params.pagination;   
+ 	var page = req.params.pagination - 1;   
     var offset = page * configApi.pageSize;
 
     // support older version
@@ -187,84 +187,20 @@ exports.paginationList = function(req, res) {
       }
 
       // paging
-      Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, synopsis:1, num_seasons:1, last_updated:1, ratings:1 }).sort(sort).skip(offset).limit(configApi.pageSize).exec(function (err, docs) {
+      Show.find(query,{ _id: 1, imdb_id: 1, tvdb_id:1, title:1, year:1, images:1, slug:1, synopsis:1, num_seasons:1, last_updated:1, rating:1 }).sort(sort).skip(offset).limit(configApi.pageSize).exec(function (err, docs) {
         res.json(docs);
       });
 
     }
 };
-/*exports.paginationList = function(req, res, next) {
-	var shows = [],
-		page = req.params.pagination;
-
-	async.waterfall([
-		function(callback) {
-
-			request.get('https://api.betaseries.com/shows/search?v=2.3&key=' + apiKey + '&order=followers&nbpp=20&page=' + page, function(error, response, body) {
-		        if (error) return next(error);
-
-		        // On parcourt les series pour recuperer les images
-		        shows = JSON.parse(response.body).shows;
-
-				for (var i in shows) {
-					shows[i].picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=360&width=555&id=' + shows[i].id;
-		        	
-		        	if (shows[i].status === 'Ended') {
-		        		shows[i].endDate = parseInt(shows[i].creation, 10) + parseInt(shows[i].seasons, 10);
-		        	}
-		        }
-		        callback(null, shows);
-		    });
-		}
-	], function (err, shows) {
-		if (err) return next(err);
-		res.status(200).send(shows);
-	});
-};*/
 
 
 /** 
  * Show detail
  */
-exports.showDetail = function(req, res, next) {
-	var showDetail = [],
-		episodes = [],
-		characters = [],
-		showId = req.params.id;
-
-	async.waterfall([
-		// Detail generaux de la serie
-		function(callback) {
-			request.get('https://api.betaseries.com/shows/display?v=2.3&key=' + apiKey + '&id=' + showId, function(error, response, body) {
-				if (error) return next(error);
-
-				showDetail = JSON.parse(response.body).show;
-				showDetail.picture = 'https://api.betaseries.com/pictures/shows?v=2.3&key=' + apiKey + '&height=380&width=255&id=' + showId;
-				res.status(200).send(showDetail);
-			});
-		}
-		// Caracteres de la serie
-		/*function(showDetail, callback) {
-			request.get('https://api.betaseries.com/shows/characters?v=2.3&key=' + apiKey + '&id=' + showId, function(error, response, body) {
-				if (error) return next(error);
-
-				characters = JSON.parse(response.body).characters;
-				showDetail.characters = characters;
-				callback(null, showDetail);
-			});
-		},*/
-		// Récupération de tous les episodes
-		/*function(showDetail, callback) {
-			var seasons = [];
-
-			request.get('https://api.betaseries.com/shows/episodes?v=2.3&key=' + apiKey + '&id=' + showDetail.id, function(error, response, body) {
-				if (error) return next(error);
-
-				episodes = JSON.parse(response.body).episodes;
-				showDetail.episodes_details = episodes;
-				res.status(200).send(showDetail);
-			});
-			
-		}*/
-	]);
+exports.showDetail = function(req, res) {
+	Show.findOne({imdb_id: req.params.id}).exec(function (err, docs) {
+        if(Array.isArray(docs)) docs = docs[0];
+        res.json(docs);
+    });
 };
