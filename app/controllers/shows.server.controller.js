@@ -258,7 +258,7 @@ exports.unsubscribeShow = function(req, res) {
 		index = user.subscribeShows.indexOf(showId);
 
 	if (index !== -1) {
-		user.subscribeShows.splice(1, index);
+		user.subscribeShows.splice(index, 1);
 		user.save(function(err) {
 			if (err) {
 				return res.status(400).send({
