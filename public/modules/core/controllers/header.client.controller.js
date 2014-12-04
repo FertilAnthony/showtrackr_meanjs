@@ -1,7 +1,9 @@
 'use strict';
 
-angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
-	function($scope, Authentication, Menus) {
+angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus', 'ShowsListService',
+	function($scope, Authentication, Menus, ShowsListService) {
+		var vm = this;
+
 		$scope.authentication = Authentication;
 		$scope.isCollapsed = false;
 		$scope.menu = Menus.getMenu('topbar');
@@ -14,5 +16,10 @@ angular.module('core').controller('HeaderController', ['$scope', 'Authentication
 		$scope.$on('$stateChangeSuccess', function() {
 			$scope.isCollapsed = false;
 		});
+
+		// Search shows
+		vm.searchShows = function(search) {
+			//ShowsListService.getSearchShows(search).then(function)
+		};
 	}
 ]);
